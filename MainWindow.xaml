@@ -5,8 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIKTOPIA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="900" Width="1500">
+    <!--WindowState="Maximized" WindowStyle="None">-->
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/menubackground.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
 
+        <Button Content="New Game" Grid.Row="1" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
+        <Button Content="Continue" Grid.Row="2" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
+        <Button Content="Exit" Grid.Row="3" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
     </Grid>
 </Window>

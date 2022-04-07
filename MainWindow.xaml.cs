@@ -23,6 +23,7 @@ namespace NIKTOPIA
         public MainWindow()
         {
             InitializeComponent();
+
         }
     }
 }
