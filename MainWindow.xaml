@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIKTOPIA"
         mc:Ignorable="d"
-        Title="MainWindow" Height="900" Width="1500">
-    <!--WindowState="Maximized" WindowStyle="None">-->
+        Title="MainWindow" 
+    WindowState="Maximized" WindowStyle="None">
     <Grid>
         <Grid.Background>
             <ImageBrush ImageSource="/Resources/menubackground.jpg"/>
@@ -19,8 +19,14 @@
             <RowDefinition Height="1.5*"/>
         </Grid.RowDefinitions>
 
-        <Button Content="New Game" Grid.Row="1" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
-        <Button Content="Continue" Grid.Row="2" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
-        <Button Content="Exit" Grid.Row="3" Width="200" Height="30" Background="Black" FontFamily="Arial" Foreground="White"  FontSize="16"/>
+        <Button Content="New Game" Grid.Row="1" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Bottom" BorderBrush="Yellow" BorderThickness="2"/>
+        <Button Content="Continue" Grid.Row="2" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20"  BorderBrush="Yellow" BorderThickness="2"/>
+        <Button Content="Exit" Grid.Row="3" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Top"  BorderBrush="Yellow" BorderThickness="2"/>
+
+        <Image Grid.Row="4">
+            <Image.Source>
+                <BitmapImage UriSource="/Resources/niktop.png"/>
+            </Image.Source>
+        </Image>
     </Grid>
 </Window>

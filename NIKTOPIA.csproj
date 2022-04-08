@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Resources\menubackground.jpg" />
+    <None Remove="Resources\niktop.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="Resources\menubackground.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\niktop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
   </ItemGroup>
