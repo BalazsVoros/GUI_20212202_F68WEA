@@ -4,29 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIKTOPIA"
+        xmlns:views="clr-namespace:NIKTOPIA.Views"
+        xmlns:vms="clr-namespace:NIKTOPIA.ViewModel"
         mc:Ignorable="d"
         Title="MainWindow" 
-    WindowState="Maximized" WindowStyle="None">
-    <Grid>
-        <Grid.Background>
-            <ImageBrush ImageSource="/Resources/menubackground.jpg"/>
-        </Grid.Background>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="1.5*"/>
-        </Grid.RowDefinitions>
+    Height="768" Width="1366">
+    
+    <Window.Resources>
+        <DataTemplate x:Name="MainWindow" DataType="{x:Type vms:MainWindowViewModel}">
+            <views:MainWindowView DataContext="{Binding}"></views:MainWindowView>
+        </DataTemplate>
 
-        <Button Content="New Game" Grid.Row="1" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Bottom" BorderBrush="Yellow" BorderThickness="2"/>
-        <Button Content="Continue" Grid.Row="2" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20"  BorderBrush="Yellow" BorderThickness="2"/>
-        <Button Content="Exit" Grid.Row="3" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Top"  BorderBrush="Yellow" BorderThickness="2"/>
-
-        <Image Grid.Row="4">
-            <Image.Source>
-                <BitmapImage UriSource="/Resources/niktop.png"/>
-            </Image.Source>
-        </Image>
-    </Grid>
+        <DataTemplate x:Name="GameWindow" DataType="{x:Type vms:GameWindowViewModel}">
+            <views:GameWindowView DataContext="{Binding}"></views:GameWindowView>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <ContentControl Content="{Binding}"/>
 </Window>
