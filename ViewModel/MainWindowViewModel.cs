@@ -34,7 +34,7 @@ namespace NIKTOPIA.ViewModel
 
         private static void StartNewGame()
         {
-           // Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive).DataContext = new GameWindowViewModel();
+           Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive).DataContext = new GameWindowViewModel();
         }
     }
 }
