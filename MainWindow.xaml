@@ -4,9 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NIKTOPIA"
+        xmlns:views="clr-namespace:NIKTOPIA.Views"
+        xmlns:vms="clr-namespace:NIKTOPIA.ViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="MainWindow" 
+    Height="768" Width="1366">
+    
+    <Window.Resources>
+        <DataTemplate x:Name="MainWindow" DataType="{x:Type vms:MainWindowViewModel}">
+            <views:MainWindowView DataContext="{Binding}"></views:MainWindowView>
+        </DataTemplate>
 
-    </Grid>
+        <DataTemplate x:Name="GameWindow" DataType="{x:Type vms:GameWindowViewModel}">
+            <views:GameWindowView DataContext="{Binding}"></views:GameWindowView>
+        </DataTemplate>
+    </Window.Resources>
+    
+    <ContentControl Content="{Binding}"/>
 </Window>
