@@ -1,0 +1,31 @@
+﻿<UserControl x:Class="NIKTOPIA.Views.MainWindowView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:NIKTOPIA.Views"
+             mc:Ignorable="d" 
+             d:DesignHeight="1080" d:DesignWidth="1920">
+    <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/menubackground.jpg"/>
+        </Grid.Background>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1.5*"/>
+        </Grid.RowDefinitions>
+
+        <Button Command="{Binding NewGameCommand}" Content="New Game" Grid.Row="1" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Bottom" BorderBrush="Yellow" BorderThickness="2"/>
+        <Button Command="{Binding ContinueGameCommand}" Content="Continue" Grid.Row="2" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20"  BorderBrush="Yellow" BorderThickness="2"/>
+        <Button Command="{Binding ExitCommand}" Content="Exit" Grid.Row="3" Width="200" Height="30" Background="Black" FontFamily="Times New Roman" Foreground="White"  FontSize="20" VerticalAlignment="Top"  BorderBrush="Yellow" BorderThickness="2"/>
+
+        <Image Grid.Row="4">
+            <Image.Source>
+                <BitmapImage UriSource="/Resources/niktop.png"/>
+            </Image.Source>
+        </Image>
+    </Grid>
+</UserControl>
