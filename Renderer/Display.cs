@@ -33,7 +33,7 @@ namespace NIKTOPIA.Renderer
                 double rectWidth = Size.Width /  gameModel.GameMatrix.GetLength(1);
                 double rectHeight = Size.Height / gameModel.GameMatrix.GetLength(0);
 
-                drawingContext.DrawRectangle(Brushes.Black, new Pen(Brushes.Black, 0),
+                drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Transparent, 0),
                     new Rect(0, 0, Size.Width, Size.Height));
 
                 for (int i = 0; i < gameModel.GameMatrix.GetLength(0); i++)
@@ -45,7 +45,7 @@ namespace NIKTOPIA.Renderer
                         {
                             case GameLogic.GameItem.player:
                                 brush = new ImageBrush
-                                    (new BitmapImage(new Uri(Path.Combine("Resources", "player.bmp"), UriKind.RelativeOrAbsolute)));
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "character_tryout.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.GameItem.dirt:
                                 brush = new ImageBrush
@@ -61,16 +61,17 @@ namespace NIKTOPIA.Renderer
                                 break;
                             case GameLogic.GameItem.space:
                                 brush = new ImageBrush
-                                   (new BitmapImage(new Uri(Path.Combine("Resources", "sky.png"), UriKind.RelativeOrAbsolute)));
+                                   (new BitmapImage(new Uri(Path.Combine("Resources", "transparent.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             default:
                                 break;
                         }
 
                         drawingContext.DrawRectangle(brush
-                                    , new Pen(Brushes.Black, 0),
+                                    , new Pen(Brushes.Transparent, 0),
                                     new Rect(j * rectWidth, i * rectHeight, rectWidth, rectHeight)
                                     );
+                        
                     }
                 }
             }
