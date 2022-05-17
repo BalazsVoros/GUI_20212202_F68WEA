@@ -11,7 +11,7 @@ namespace NIKTOPIA.Logic
     {
         public enum GameItem 
         {
-            player, dirt, rock, space, bedrock
+            player, dirt, rock, space, bedrock , grass , dirtrock
         }
 
         public enum Directions
@@ -41,6 +41,8 @@ namespace NIKTOPIA.Logic
             {
                 case 'p': return GameItem.player;
                 case 'd': return GameItem.dirt;
+                case 'g': return GameItem.grass;
+                case '-': return GameItem.dirtrock;
                 case 'r': return GameItem.rock;
                 case 's': return GameItem.space;
                 case 'b': return GameItem.bedrock;

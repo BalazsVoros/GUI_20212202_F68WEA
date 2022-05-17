@@ -17,7 +17,7 @@ namespace NIKTOPIA.Renderer
         public NIKTOPIA.Misc.Size Size { get; set; }
         //public void Resize(NIKTOPIA.Misc.Size size)
         //{
-        //    this.size = size;
+        //    this.Size = size;
         //}
 
         public void SetupModel(IGameModel gameModel)
@@ -49,26 +49,30 @@ namespace NIKTOPIA.Renderer
                                 break;
                             case GameLogic.GameItem.dirt:
                                 brush = new ImageBrush
-                                    (new BitmapImage(new Uri(Path.Combine("Resources", "dirt.jpg"), UriKind.RelativeOrAbsolute)));
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "dirt.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.grass:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "dirt_grass.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.dirtrock:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "stonedirt.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.GameItem.rock:
                                 brush = new ImageBrush
-                                  (new BitmapImage(new Uri(Path.Combine("Resources", "rock.jpg"), UriKind.RelativeOrAbsolute)));
+                                  (new BitmapImage(new Uri(Path.Combine("Resources", "stone.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.GameItem.bedrock:
                                 brush = new ImageBrush
                                     (new BitmapImage(new Uri(Path.Combine("Resources", "bedrock.jpg"), UriKind.RelativeOrAbsolute)));
-                                break;
-                            case GameLogic.GameItem.space:
-                                brush = new ImageBrush
-                                   (new BitmapImage(new Uri(Path.Combine("Resources", "transparent.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             default:
                                 break;
                         }
 
                         drawingContext.DrawRectangle(brush
-                                    , new Pen(Brushes.Transparent, 0),
+                                    , new Pen(Brushes.Black, 0),
                                     new Rect(j * rectWidth, i * rectHeight, rectWidth, rectHeight)
                                     );
                         
