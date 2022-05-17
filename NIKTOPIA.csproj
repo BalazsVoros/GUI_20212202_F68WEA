@@ -7,11 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\background_4.png" />
+    <None Remove="Resources\character_tryout.png" />
     <None Remove="Resources\menubackground.jpg" />
     <None Remove="Resources\niktop.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Resources\background_4.png" />
+    <Resource Include="Resources\character_tryout.png" />
     <Resource Include="Resources\menubackground.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
