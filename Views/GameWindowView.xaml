@@ -6,8 +6,11 @@
              xmlns:local="clr-namespace:NIKTOPIA.Views"
              xmlns:renderer="clr-namespace:NIKTOPIA.Renderer"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
+             d:DesignHeight="1080" d:DesignWidth="1920" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Grid x:Name="grid">
+        <Grid.Background>
+            <ImageBrush ImageSource="/Resources/background_4.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+        </Grid.Background>
         <renderer:Display x:Name="display"/>
         <Grid.Background>
             <ImageBrush ImageSource="/Resources/background_4.png"/>
