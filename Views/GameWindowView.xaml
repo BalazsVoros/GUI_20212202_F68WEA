@@ -12,8 +12,5 @@
             <ImageBrush ImageSource="/Resources/background_4.png" RenderOptions.BitmapScalingMode="HighQuality"/>
         </Grid.Background>
         <renderer:Display x:Name="display"/>
-        <Grid.Background>
-            <ImageBrush ImageSource="/Resources/background_4.png"/>
-        </Grid.Background>
     </Grid>
 </UserControl>
