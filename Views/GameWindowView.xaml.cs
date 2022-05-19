@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace NIKTOPIA.Views
 {
@@ -31,11 +32,19 @@ namespace NIKTOPIA.Views
             display.SetupModel(gameLogic);
             gameController = new GameController(gameLogic);
             display.Size = new NIKTOPIA.Misc.Size(Application.Current.MainWindow.ActualWidth, Application.Current.MainWindow.ActualHeight);
+            DispatcherTimer dispatcherTimer = new DispatcherTimer(); 
+            dispatcherTimer.Tick += Timer_Tick; 
+            dispatcherTimer.Interval = TimeSpan.FromMilliseconds(20);
+            dispatcherTimer.Start();
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            display.InvalidateVisual();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // display. .Resize(new NIKTOPIA.Misc.Size(grid.ActualWidth, grid.ActualHeight));
             var window = Window.GetWindow(this);
             window.KeyDown += Window_KeyDown;
             display.InvalidateVisual();
