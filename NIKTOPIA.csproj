@@ -16,9 +16,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Resources\background.gif" />
+    <Resource Include="Resources\background.gif">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\background_4.png" />
-    <Resource Include="Resources\character_tryout.png" />
+    <Resource Include="Resources\character_tryout.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Resources\menubackground.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>

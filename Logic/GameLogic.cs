@@ -23,7 +23,7 @@ namespace NIKTOPIA.Logic
 
         public GameLogic()
         {
-            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix_level4.txt"));
+            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix.txt"));
             GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
             for (int i = 0; i < GameMatrix.GetLength(0); i++)
             {
