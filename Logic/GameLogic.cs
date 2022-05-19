@@ -286,6 +286,44 @@ namespace NIKTOPIA.Logic
             }
         }
 
+        public void Mine() 
+        {
+            var coordinates = GetPositionOfPlayer();
+            int i = coordinates[0];
+            int j = coordinates[1];
+
+            int DistanceFromLeftBorder = GetDistanceFromLeftBorder(j);
+            int DistanceFromRightBorder = GetDistanceFromRightBorder(j);
+            int DistanceFromTopBorder = GetDistanceFromTopBorder(i);
+            int DistanceFromBottomBorder = GetDistanceFromBottomBorder(i);
+
+            if (GetDistanceFromLeftBorder(j) >= 2)
+            {
+
+            }
+            else if (GetDistanceFromLeftBorder(j) >= 1)
+            {
+
+            }
+        }
+
+        private int GetDistanceFromLeftBorder(int j)
+        {
+            return Math.Abs(0 - j);
+        }
+        private int GetDistanceFromRightBorder(int j)
+        {
+            return GameMatrix.GetLength(1) - j;
+        }
+        private int GetDistanceFromTopBorder(int i)
+        {
+            return Math.Abs(0 - i);
+        }
+        private int GetDistanceFromBottomBorder(int i)
+        {
+            return GameMatrix.GetLength(0) - i;
+        }
+
         private int[] GetPositionOfPlayer()
         {
             for (int i = 0; i < GameMatrix.GetLength(0); i++)

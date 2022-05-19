@@ -36,6 +36,9 @@ namespace NIKTOPIA.Controllers
                 case Key.Space:
                     gameControl.Move(GameLogic.Directions.jump); 
                     break;
+                case Key.M:
+                    gameControl.Mine();
+                    break;
             }
         }
     }
