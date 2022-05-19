@@ -11,7 +11,7 @@ namespace NIKTOPIA.Logic
     {
         public enum GameItem 
         {
-            player, dirt, rock, space, bedrock , grass , dirtrock
+            player, dirt, rock, space, bedrock , grass , dirtrock , pillar, mossyStone , gate, gold, coal, caveWall, emerald, platform, blueOre, goldPillar , bluePillar
         }
 
         public enum Directions
@@ -23,7 +23,7 @@ namespace NIKTOPIA.Logic
 
         public GameLogic()
         {
-            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix.txt"));
+            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix_level4.txt"));
             GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
             for (int i = 0; i < GameMatrix.GetLength(0); i++)
             {
@@ -46,6 +46,17 @@ namespace NIKTOPIA.Logic
                 case 'r': return GameItem.rock;
                 case 's': return GameItem.space;
                 case 'b': return GameItem.bedrock;
+                case 't': return GameItem.pillar;
+                case 'm': return GameItem.mossyStone;
+                case 'i': return GameItem.gate;
+                case 'w': return GameItem.caveWall;
+                case 'c': return GameItem.coal;
+                case 'o': return GameItem.gold;
+                case 'x': return GameItem.platform;
+                case 'z': return GameItem.blueOre;
+                case 'e': return GameItem.emerald;
+                case 'v': return GameItem.goldPillar;
+                case 'j': return GameItem.bluePillar;
                 default:
                     return GameItem.space;
             }

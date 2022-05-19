@@ -30,11 +30,11 @@ namespace NIKTOPIA.Renderer
             base.OnRender(drawingContext);
             if (gameModel != null && Size.Width > 50 && Size.Height > 50)
             {
-                double rectWidth = Size.Width /  gameModel.GameMatrix.GetLength(1);
+                double rectWidth = Size.Width / gameModel.GameMatrix.GetLength(1);
                 double rectHeight = Size.Height / gameModel.GameMatrix.GetLength(0);
 
                 drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Transparent, 0),
-                    new Rect(0, 0, Size.Width, Size.Height));
+                    new Rect(0, 0, rectHeight, rectHeight));
 
                 for (int i = 0; i < gameModel.GameMatrix.GetLength(0); i++)
                 {
@@ -67,12 +67,56 @@ namespace NIKTOPIA.Renderer
                                 brush = new ImageBrush
                                     (new BitmapImage(new Uri(Path.Combine("Resources", "bedrock.jpg"), UriKind.RelativeOrAbsolute)));
                                 break;
+                            case GameLogic.GameItem.pillar:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "mossy_stone_2.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.mossyStone:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "mossy_stone.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.gate:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "gate.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.caveWall:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "cave_wall.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.coal:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "coal.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.gold:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "gold.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.platform:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "bossplatform.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.blueOre:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "bossore.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.emerald:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "emerald.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.goldPillar:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "goldpillar.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.bluePillar:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "bluepillar.png"), UriKind.RelativeOrAbsolute)));
+                                break;
                             default:
                                 break;
                         }
 
                         drawingContext.DrawRectangle(brush
-                                    , new Pen(Brushes.Black, 0),
+                                    , new Pen(Brushes.Transparent, 0),
                                     new Rect(j * rectWidth, i * rectHeight, rectWidth, rectHeight)
                                     );
                         
