@@ -1,5 +1,7 @@
-﻿using System;
+﻿using NIKTOPIA.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace NIKTOPIA.Logic
 
         public enum GameItem
         {
-            player, dirt, rock, space, bedrock , grass , dirtrock , pillar, mossyStone , gate, gold, coal, caveWall, emerald, platform, blueOre, goldPillar , bluePillar
+            player, dirt, rock, space, bedrock, grass, dirtrock, pillar, mossyStone, gate, gold, coal, caveWall, emerald, platform, blueOre, goldPillar, bluePillar
         }
 
         public enum Directions
@@ -298,7 +300,11 @@ namespace NIKTOPIA.Logic
                     break;
             }
         }
-
+        public void openInventory()
+        {
+            Views.InventoryView inventoryView = new Views.InventoryView();
+            inventoryView.ShowDialog();
+        }
         public void Mine() 
         {
             var coordinates = GetPositionOfPlayer();

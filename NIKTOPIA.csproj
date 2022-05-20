@@ -9,6 +9,9 @@
   <ItemGroup>
     <None Remove="Resources\background.gif" />
     <None Remove="Resources\background_4.png" />
+    <None Remove="Resources\character_left.png" />
+    <None Remove="Resources\character_right.png" />
+    <None Remove="Resources\hp_heart.png" />
     <None Remove="Resources\menubackground.jpg" />
     <None Remove="Resources\niktop.png" />
     <None Remove="Resources\transparent.png" />
@@ -19,6 +22,15 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\background_4.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\character_left.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\character_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\hp_heart.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\menubackground.jpg">

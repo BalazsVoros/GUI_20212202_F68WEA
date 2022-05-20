@@ -24,6 +24,7 @@ namespace NIKTOPIA.Views
     public partial class GameWindowView : UserControl
     {
         GameController gameController;
+        InventoryView inventoryView;
 
         public GameWindowView()
         {

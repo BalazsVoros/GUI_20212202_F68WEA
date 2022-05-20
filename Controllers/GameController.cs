@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace NIKTOPIA.Controllers
@@ -38,6 +39,9 @@ namespace NIKTOPIA.Controllers
                     break;
                 case Key.M:
                     gameControl.Mine();
+                    break;
+                case Key.E:
+                    gameControl.openInventory();
                     break;
             }
         }

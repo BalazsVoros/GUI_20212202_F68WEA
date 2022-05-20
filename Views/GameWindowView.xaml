@@ -11,6 +11,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Resources/background_4.png" RenderOptions.BitmapScalingMode="HighQuality"/>
         </Grid.Background>
+        <TextBlock Text="HP: 100" FontSize="35" x:Name="health"/>
         <renderer:Display x:Name="display"/>
     </Grid>
 </UserControl>

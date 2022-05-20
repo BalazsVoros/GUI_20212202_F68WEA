@@ -11,5 +11,6 @@ namespace NIKTOPIA.Logic
     {
         void Move(Directions direction);
         void Mine();
+        void openInventory();
     }
 }
