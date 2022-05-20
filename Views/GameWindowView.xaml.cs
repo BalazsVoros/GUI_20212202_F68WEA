@@ -56,5 +56,10 @@ namespace NIKTOPIA.Views
             display.InvalidateVisual();
         }
 
+        //private void Window_KeyUp(object sender, KeyEventArgs e)
+        //{
+        //    gameController.KeyUp(e.Key);
+        //}
+
     }
 }

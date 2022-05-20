@@ -10,6 +10,8 @@ namespace NIKTOPIA.Logic
     internal interface IGameControl
     {
         void Move(Directions direction);
-        void Mine();
+        void ShowOptionsForMining();
+        void Mine(int v);
+        void RevertFromMining();
     }
 }
