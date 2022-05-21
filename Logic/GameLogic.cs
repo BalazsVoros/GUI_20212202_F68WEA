@@ -17,6 +17,7 @@ namespace NIKTOPIA.Logic
         private bool isRightPressed = false;
         private bool isLeftPressed = false;
         private bool isMoving = false;
+        private bool isMining = false;
 
         public enum GameItem
         {
@@ -34,16 +35,26 @@ namespace NIKTOPIA.Logic
 
         public GameLogic()
         {
-            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix.txt"));
-            GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
-            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            Queue<string> levelsQueue = new Queue<string>();
+            //var levelsInOne;
+
+            //for (int i = 1; i <= 4; i++)
+            //{
+            //    string name = "/Levels/level" + i + ".txt";
+
+
+
+            //    levelsQueue.Enqueue(name);
+            //}
+            //
+            var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Levels"), "*.txt");
+
+            foreach (var item in lvls)
             {
-                for (int j = 0; j < GameMatrix.GetLength(1); j++)
-                {
-                    char character = lines[i + 2][j];
-                    GameMatrix[i, j] = ConvertToEnum(character);
-                }
+                levelsQueue.Enqueue(item);
             }
+
+            LoadNextLevel(levelsQueue.Dequeue());
 
             HelperMatrix = new GameItem[3, 3];
         }
@@ -76,6 +87,8 @@ namespace NIKTOPIA.Logic
 
         public async void Move(Directions direction)
         {
+            RevertFromMining();
+
             var coordinates = GetPositionOfPlayer();
             int i = coordinates[0];
             int j = coordinates[1];
@@ -241,11 +254,7 @@ namespace NIKTOPIA.Logic
                             k++;
                         }
 
-                        if (isRightPressed || isLeftPressed)
-                        {
-
-                        }
-                        if (GameMatrix[i + 1, j] == GameItem.space && isMoving == false)
+                        if (GameMatrix[i + 1, j] == GameItem.space && isMoving == false && !isLeftPressed && !isRightPressed)
                         {
                             GameMatrix[i, j] = GameItem.player;
                             GameMatrix[old_i, old_j] = GameItem.space;
@@ -305,53 +314,58 @@ namespace NIKTOPIA.Logic
 
         public void Mine(int number)
         {
-            var coordinates = GetPositionOfPlayer();
-            int x = coordinates[0];
-            int y = coordinates[1];
-
-            switch (number)
+            if (isMining)
             {
-                case 1:
-                    GameMatrix[x - 1, y - 1] = GameItem.space;
-                    break;
-                case 2:
-                    GameMatrix[x - 1, y] = GameItem.space;
-                    break;
-                case 3:
-                    GameMatrix[x - 1, y + 1] = GameItem.space;
-                    break;
-                case 4:
-                    GameMatrix[x, y + 1] = GameItem.space;
-                    break;
-                case 5:
-                    GameMatrix[x + 1, y + 1] = GameItem.space;
-                    break;
-                case 6:
-                    GameMatrix[x + 1, y] = GameItem.space;
-                    break;
-                case 7:
-                    GameMatrix[x + 1, y - 1] = GameItem.space;
-                    break;
-                case 8:
-                    GameMatrix[x, y - 1] = GameItem.space;
-                    break;
-                default:
-                    break;
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                switch (number)
+                {
+                    case 1:
+                        GameMatrix[x - 1, y - 1] = GameItem.space;
+                        break;
+                    case 2:
+                        GameMatrix[x - 1, y] = GameItem.space;
+                        break;
+                    case 3:
+                        GameMatrix[x - 1, y + 1] = GameItem.space;
+                        break;
+                    case 4:
+                        GameMatrix[x, y + 1] = GameItem.space;
+                        break;
+                    case 5:
+                        GameMatrix[x + 1, y + 1] = GameItem.space;
+                        break;
+                    case 6:
+                        GameMatrix[x + 1, y] = GameItem.space;
+                        break;
+                    case 7:
+                        GameMatrix[x + 1, y - 1] = GameItem.space;
+                        break;
+                    case 8:
+                        GameMatrix[x, y - 1] = GameItem.space;
+                        break;
+                    default:
+                        break;
+                }
             }
         }
         public void ShowOptionsForMining()
         {
+            isMining = true;
+
             var coordinates = GetPositionOfPlayer();
             int x = coordinates[0];
             int y = coordinates[1];
 
             int k = 0;
             int l = 0;
-            
-            for (int i = x-1; i <= x+1; i++)
+
+            for (int i = x - 1; i <= x + 1; i++)
             {
                 l = 0;
-                for (int j = y-1; j <= y+1; j++)
+                for (int j = y - 1; j <= y + 1; j++)
                 {
                     HelperMatrix[k, l] = GameMatrix[i, j];
                     l++;
@@ -421,49 +435,44 @@ namespace NIKTOPIA.Logic
             }
 
         }
-
-        public void RevertFromMining()
+        public async void RevertFromMining()
         {
-            var coordinates = GetPositionOfPlayer();
-            int x = coordinates[0];
-            int y = coordinates[1];
-
-            int k = 0;
-            int l = 0;
-
-            for (int i = x - 1; i <= x + 1; i++)
+            if (isMining)
             {
-                l = 0;
-                for (int j = y - 1; j <= y + 1; j++)
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                int k = 0;
+                int l = 0;
+
+                for (int i = x - 1; i <= x + 1; i++)
                 {
-                    if (GameMatrix[i,j] != GameItem.space && GameMatrix[i,j] != GameItem.player)
+                    l = 0;
+                    for (int j = y - 1; j <= y + 1; j++)
                     {
-                        GameMatrix[i, j] = HelperMatrix[k, l];
+                        if (GameMatrix[i, j] != GameItem.space && GameMatrix[i, j] != GameItem.player)
+                        {
+                            GameMatrix[i, j] = HelperMatrix[k, l];
 
+                        }
+
+                        l++;
                     }
-
-                    l++;
+                    k++;
                 }
-                k++;
+
+                isMining = false;
+
+                while (GameMatrix[x + 1, y] == GameItem.space)
+                {
+                    x++;
+                    GameMatrix[x, y] = GameItem.player;
+                    GameMatrix[x - 1, y] = GameItem.space;
+                    await Task.Delay(40);
+                }
             }
         }
-
-        //private int GetDistanceFromLeftBorder(int j)
-        //{
-        //    return Math.Abs(0 - j);
-        //}
-        //private int GetDistanceFromRightBorder(int j)
-        //{
-        //    return GameMatrix.GetLength(1) - j;
-        //}
-        //private int GetDistanceFromTopBorder(int i)
-        //{
-        //    return Math.Abs(0 - i);
-        //}
-        //private int GetDistanceFromBottomBorder(int i)
-        //{
-        //    return GameMatrix.GetLength(0) - i;
-        //}
 
         private bool CheckForLeftBorder(int j)
         {
@@ -498,22 +507,6 @@ namespace NIKTOPIA.Logic
             return false;
         }
 
-
-        private int[] GetPositionOfPlayer()
-        {
-            for (int i = 0; i < GameMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < GameMatrix.GetLength(1); j++)
-                {
-                    if (GameMatrix[i, j] == GameItem.player)
-                    {
-                        return new int[] { i, j };
-                    }
-                }
-            }
-            return new int[] { -1, -1 };
-        }
-
         private void ClearForLeft(int x, int y)
         {
             for (int i = 0; i < GameMatrix.GetLength(0); i++)
@@ -542,7 +535,34 @@ namespace NIKTOPIA.Logic
             }
         }
 
-        
+        private int[] GetPositionOfPlayer()
+        {
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                {
+                    if (GameMatrix[i, j] == GameItem.player)
+                    {
+                        return new int[] { i, j };
+                    }
+                }
+            }
+            return new int[] { -1, -1 };
+        }
+
+        private void LoadNextLevel(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                {
+                    char character = lines[i + 2][j];
+                    GameMatrix[i, j] = ConvertToEnum(character);
+                }
+            }
+        }
     }
 
 }
