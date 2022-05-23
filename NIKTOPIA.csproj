@@ -148,6 +148,9 @@
     <None Update="Resources\number8.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Resources\placingblock.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Resources\player.bmp">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

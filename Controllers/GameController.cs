@@ -42,29 +42,35 @@ namespace NIKTOPIA.Controllers
                 case Key.N:
                     gameControl.RevertFromMining();
                     break;
+                case Key.P:
+                    gameControl.ShowOptionsForPlacing();
+                    break;
+                case Key.O:
+                    gameControl.RevertFromPlacing();
+                    break;
                 case Key.D1:
-                    gameControl.Mine(1);
+                    gameControl.Interact(1);
                     break;
                 case Key.D2:
-                    gameControl.Mine(2);
+                    gameControl.Interact(2);
                     break;
                 case Key.D3:
-                    gameControl.Mine(3);
+                    gameControl.Interact(3);
                     break;
                 case Key.D4:
-                    gameControl.Mine(4);
+                    gameControl.Interact(4);
                     break;
                 case Key.D5:
-                    gameControl.Mine(5);
+                    gameControl.Interact(5);
                     break;
                 case Key.D6:
-                    gameControl.Mine(6);
+                    gameControl.Interact(6);
                     break;
                 case Key.D7:
-                    gameControl.Mine(7);
+                    gameControl.Interact(7);
                     break;
                 case Key.D8:
-                    gameControl.Mine(8);
+                    gameControl.Interact(8);
                     break;
             }
         }

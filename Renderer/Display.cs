@@ -143,6 +143,11 @@ namespace NIKTOPIA.Renderer
                                 brush = new ImageBrush
                                     (new BitmapImage(new Uri(Path.Combine("Resources", "number8.png"), UriKind.RelativeOrAbsolute)));
                                 break;
+                                break;
+                            case GameLogic.GameItem.placingBlock:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "placingblock.jpg"), UriKind.RelativeOrAbsolute)));
+                                break;
                             default:
                                 break;
                         }

@@ -11,7 +11,9 @@ namespace NIKTOPIA.Logic
     {
         void Move(Directions direction);
         void ShowOptionsForMining();
-        void Mine(int v);
+        void Interact(int v);
         void RevertFromMining();
+        void ShowOptionsForPlacing();
+        void RevertFromPlacing();
     }
 }
