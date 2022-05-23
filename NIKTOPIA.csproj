@@ -10,7 +10,6 @@
     <None Remove="Resources\background.gif" />
     <None Remove="Resources\background_4.png" />
     <None Remove="Resources\character_left.png" />
-    <None Remove="Resources\character_right.png" />
     <None Remove="Resources\howtoplay.jpg" />
     <None Remove="Resources\hp_heart.png" />
     <None Remove="Resources\menubackground.jpg" />
@@ -26,9 +25,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\character_left.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Resources\character_right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\howtoplay.jpg">
@@ -90,6 +86,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\character_movingright_2.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\character_right.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Resources\character_tryout.png">
