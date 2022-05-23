@@ -25,16 +25,17 @@ namespace NIKTOPIA.Renderer
             this.gameModel = gameModel;
         }
 
+        
         protected override void OnRender(DrawingContext drawingContext)
         {
             base.OnRender(drawingContext);
             if (gameModel != null && Size.Width > 50 && Size.Height > 50)
             {
-                double rectWidth = Size.Width / gameModel.GameMatrix.GetLength(1);
-                double rectHeight = Size.Height / gameModel.GameMatrix.GetLength(0);
+                double rectWidth = Application.Current.MainWindow.Width / gameModel.GameMatrix.GetLength(1);
+                double rectHeight = Application.Current.MainWindow.Height / gameModel.GameMatrix.GetLength(0);
 
                 drawingContext.DrawRectangle(Brushes.Transparent, new Pen(Brushes.Transparent, 0),
-                    new Rect(0, 0, rectHeight, rectHeight));
+                    new Rect(0, 0, rectWidth, rectHeight));
 
                 for (int i = 0; i < gameModel.GameMatrix.GetLength(0); i++)
                 {
@@ -45,7 +46,7 @@ namespace NIKTOPIA.Renderer
                         {
                             case GameLogic.GameItem.player:
                                 brush = new ImageBrush
-                                    (new BitmapImage(new Uri(Path.Combine("Resources", "character_tryout.png"), UriKind.RelativeOrAbsolute)));
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "character_right.png"), UriKind.RelativeOrAbsolute)));
                                 break;
                             case GameLogic.GameItem.dirt:
                                 brush = new ImageBrush

@@ -1,6 +1,7 @@
-﻿using NIKTOPIA.ViewModel;
+using NIKTOPIA.ViewModel;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -32,7 +33,6 @@ namespace NIKTOPIA.Logic
         }
 
         public GameItem[,] GameMatrix { get; set; }
-
         public GameItem[,] HelperMatrix { get; set; }
 
         public int BlockNumber { get; set; }
@@ -40,6 +40,7 @@ namespace NIKTOPIA.Logic
         public int BlocksPlaced { get; set; }
 
         Queue<string> levelsQueue;
+
 
         public GameLogic()
         {
@@ -317,7 +318,6 @@ namespace NIKTOPIA.Logic
                     break;
             }
         }
-
         public void Interact(int number)
         {
             if (isMining)

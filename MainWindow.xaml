@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Title="MainWindow" 
     Height="768" Width="1366">
-    
+
     <Window.Resources>
         <DataTemplate x:Name="MainWindow" DataType="{x:Type vms:MainWindowViewModel}">
             <views:MainWindowView DataContext="{Binding}"></views:MainWindowView>
@@ -18,7 +18,10 @@
         <DataTemplate x:Name="GameWindow" DataType="{x:Type vms:GameWindowViewModel}">
             <views:GameWindowView DataContext="{Binding}"></views:GameWindowView>
         </DataTemplate>
+
+        <DataTemplate x:Name="HowToPlay" DataType="{x:Type vms:HowToPlayViewModel}">
+            <views:HowtoPlayView DataContext="{Binding}"></views:HowtoPlayView>
+        </DataTemplate>
     </Window.Resources>
-    
     <ContentControl Content="{Binding}"/>
 </Window>
