@@ -40,9 +40,6 @@ namespace NIKTOPIA.Controllers
                 case Key.M:
                     gameControl.Mine();
                     break;
-                case Key.E:
-                    gameControl.openInventory();
-                    break;
             }
         }
     }

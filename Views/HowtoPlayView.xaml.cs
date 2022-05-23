@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,21 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 namespace NIKTOPIA.Views
 {
     /// <summary>
-    /// Interaction logic for InventoryView.xaml
+    /// Interaction logic for HowtoPlay.xaml
     /// </summary>
-    public partial class InventoryView : Window
+    public partial class HowtoPlayView : UserControl
     {
-        public ObservableCollection<Logic.GameLogic.GameItem> Inventory;
-        public InventoryView()
+        public HowtoPlayView()
         {
             InitializeComponent();
-            var vm = new ViewModel.InventoryViewModel();
-            this.DataContext = vm;
         }
     }
 }

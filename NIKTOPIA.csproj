@@ -11,6 +11,7 @@
     <None Remove="Resources\background_4.png" />
     <None Remove="Resources\character_left.png" />
     <None Remove="Resources\character_right.png" />
+    <None Remove="Resources\howtoplay.jpg" />
     <None Remove="Resources\hp_heart.png" />
     <None Remove="Resources\menubackground.jpg" />
     <None Remove="Resources\niktop.png" />
@@ -28,6 +29,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\character_right.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\howtoplay.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\hp_heart.png">

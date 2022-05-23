@@ -12,13 +12,13 @@ namespace NIKTOPIA.ViewModel
     public class MainWindowViewModel
     {
         public ICommand NewGameCommand { get; set; }
-        public ICommand ContinueGameCommand { get; set; }
+        public ICommand HowtoPlayCommand { get; set; }
         public ICommand ExitCommand { get; set; }
 
         public MainWindowViewModel()
         {
             NewGameCommand = new RelayCommand(() => StartNewGame());
-            ContinueGameCommand = new RelayCommand(() => ContinueGame());
+            HowtoPlayCommand = new RelayCommand(() => HowtoPlay());
             ExitCommand = new RelayCommand(() => Exit());
         }
 
@@ -28,8 +28,9 @@ namespace NIKTOPIA.ViewModel
             window.Close();
         }
 
-        private static void ContinueGame()
+        private static void HowtoPlay()
         {
+            Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive).DataContext = new HowToPlayViewModel();
         }
 
         private static void StartNewGame()

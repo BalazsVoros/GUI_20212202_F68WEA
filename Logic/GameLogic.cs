@@ -32,6 +32,9 @@ namespace NIKTOPIA.Logic
 
         public GameItem[,] GameMatrix { get; set; }
 
+        public int BlockNumber { get; set; }
+
+
         public GameLogic()
         {
             string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix.txt"));
@@ -300,11 +303,7 @@ namespace NIKTOPIA.Logic
                     break;
             }
         }
-        public void openInventory()
-        {
-            Views.InventoryView inventoryView = new Views.InventoryView();
-            inventoryView.ShowDialog();
-        }
+        
         public void Mine() 
         {
             var coordinates = GetPositionOfPlayer();
