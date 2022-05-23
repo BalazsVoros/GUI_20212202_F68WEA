@@ -784,7 +784,7 @@ namespace NIKTOPIA.Logic
 
         private void CheckForGameEnd()
         {
-            if (BlocksMined >= 10 && BlocksPlaced >= 3)
+            if (BlocksMined >= 10 && BlocksPlaced >= 10)
             {
                 RevertFromMining();
                 RevertFromPlacing();
