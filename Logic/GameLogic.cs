@@ -1,4 +1,4 @@
-﻿using NIKTOPIA.Models;
+using NIKTOPIA.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -19,10 +19,12 @@ namespace NIKTOPIA.Logic
         private bool isRightPressed = false;
         private bool isLeftPressed = false;
         private bool isMoving = false;
+        private bool isMining = false;
+        private bool isPlacing = false;
 
         public enum GameItem
         {
-            player, dirt, rock, space, bedrock, grass, dirtrock, pillar, mossyStone, gate, gold, coal, caveWall, emerald, platform, blueOre, goldPillar, bluePillar
+            player, dirt, rock, space, bedrock, grass, dirtrock, pillar, mossyStone, gate, gold, coal, caveWall, emerald, platform, blueOre, goldPillar, bluePillar, n1, n2, n3, n4, n5, n6, n7, n8, placingBlock
         }
 
         public enum Directions
@@ -31,22 +33,33 @@ namespace NIKTOPIA.Logic
         }
 
         public GameItem[,] GameMatrix { get; set; }
+        public GameItem[,] HelperMatrix { get; set; }
 
         public int BlockNumber { get; set; }
+        public int BlocksMined { get; set; }
+        public int BlocksPlaced { get; set; }
+
+        Queue<string> levelsQueue;
 
 
         public GameLogic()
         {
-            string[] lines = File.ReadAllLines(Path.Combine("Resources", "gamematrix.txt"));
-            GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
-            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            BlockNumber = 0;
+            BlocksMined = 0;
+            BlocksPlaced = 0;
+
+            levelsQueue = new Queue<string>();
+
+            var lvls = Directory.GetFiles(Path.Combine(Directory.GetCurrentDirectory(), "Levels"), "*.txt");
+
+            foreach (var item in lvls)
             {
-                for (int j = 0; j < GameMatrix.GetLength(1); j++)
-                {
-                    char character = lines[i + 2][j];
-                    GameMatrix[i, j] = ConvertToEnum(character);
-                }
+                levelsQueue.Enqueue(item);
             }
+
+            LoadNextLevel(levelsQueue.Dequeue());
+
+            HelperMatrix = new GameItem[3, 3];
         }
         private GameItem ConvertToEnum(char v)
         {
@@ -77,6 +90,8 @@ namespace NIKTOPIA.Logic
 
         public async void Move(Directions direction)
         {
+            RevertFromMining();
+
             var coordinates = GetPositionOfPlayer();
             int i = coordinates[0];
             int j = coordinates[1];
@@ -88,15 +103,17 @@ namespace NIKTOPIA.Logic
                     if (i - 1 >= 0)
                     {
                         isMoving = true;
-                        if ( GameMatrix[i, j - 1] != GameItem.space && j - 1 >= 0)
+                        if (GameMatrix[i, j - 1] != GameItem.space && j - 1 >= 0)
                         {
                             i--;
                             j--;
+                            ClearForLeft(i, j);
                         }
-                        else if ( GameMatrix[i, j + 1] != GameItem.space && j + 1 < GameMatrix.GetLength(1))
+                        else if (GameMatrix[i, j + 1] != GameItem.space && j + 1 < GameMatrix.GetLength(1))
                         {
                             i--;
                             j++;
+                            ClearForRight(i, j);
                         }
                         if (GameMatrix[i, j] == GameItem.space)
                         {
@@ -123,15 +140,17 @@ namespace NIKTOPIA.Logic
                     if (i + 1 < GameMatrix.GetLength(0))
                     {
                         isMoving = true;
-                        if ( GameMatrix[i + 1, j - 1] == GameItem.space && j - 1 >= 0)
+                        if (GameMatrix[i + 1, j - 1] == GameItem.space && j - 1 > 0)
                         {
                             i++;
                             j--;
+                            ClearForLeft(i,j);
                         }
-                        else if ( GameMatrix[i + 1, j + 1] == GameItem.space && j + 1 < GameMatrix.GetLength(1))
+                        else if (GameMatrix[i + 1, j + 1] == GameItem.space && j + 1 < GameMatrix.GetLength(1))
                         {
                             i++;
                             j++;
+                            ClearForRight(i, j);
                         }
                         if (GameMatrix[i, j] == GameItem.space)
                         {
@@ -161,7 +180,7 @@ namespace NIKTOPIA.Logic
 
                         isMoving = true;
                         j--;
-                       isLeftPressed = true;
+                        isLeftPressed = true;
                         if (GameMatrix[i, j] == GameItem.space)
                         {
                             ClearForLeft(i, j);
@@ -210,7 +229,7 @@ namespace NIKTOPIA.Logic
 
                                 await Task.Delay(40);
 
-                               ClearForRight(i, j);
+                                ClearForRight(i, j);
 
                                 while (GameMatrix[i + 1, j] == GameItem.space)
                                 {
@@ -233,7 +252,7 @@ namespace NIKTOPIA.Logic
                         ClearForLeft(i, j);
 
                         int k = 0;
-                        while (k < 3 && isMoving == false)
+                        while (k < 3 && isMoving == false && GameMatrix[i-1, j] == GameItem.space)
                         {
                             i--;
                             GameMatrix[i, j] = GameItem.player;
@@ -242,11 +261,7 @@ namespace NIKTOPIA.Logic
                             k++;
                         }
 
-                        if (isRightPressed || isLeftPressed)
-                        {
-
-                        }
-                        if (GameMatrix[i+1, j] == GameItem.space && isMoving == false)
+                        if (GameMatrix[i + 1, j] == GameItem.space && isMoving == false && !isLeftPressed && !isRightPressed)
                         {
                             GameMatrix[i, j] = GameItem.player;
                             GameMatrix[old_i, old_j] = GameItem.space;
@@ -303,58 +318,411 @@ namespace NIKTOPIA.Logic
                     break;
             }
         }
-        
-        public void Mine() 
+        public void Interact(int number)
         {
-            var coordinates = GetPositionOfPlayer();
-            int i = coordinates[0];
-            int j = coordinates[1];
-
-            int DistanceFromLeftBorder = GetDistanceFromLeftBorder(j);
-            int DistanceFromRightBorder = GetDistanceFromRightBorder(j);
-            int DistanceFromTopBorder = GetDistanceFromTopBorder(i);
-            int DistanceFromBottomBorder = GetDistanceFromBottomBorder(i);
-
-            if (GetDistanceFromLeftBorder(j) >= 2)
+            if (isMining)
             {
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
 
-            }
-            else if (GetDistanceFromLeftBorder(j) >= 1)
-            {
-
-            }
-        }
-
-        private int GetDistanceFromLeftBorder(int j)
-        {
-            return Math.Abs(0 - j);
-        }
-        private int GetDistanceFromRightBorder(int j)
-        {
-            return GameMatrix.GetLength(1) - j;
-        }
-        private int GetDistanceFromTopBorder(int i)
-        {
-            return Math.Abs(0 - i);
-        }
-        private int GetDistanceFromBottomBorder(int i)
-        {
-            return GameMatrix.GetLength(0) - i;
-        }
-
-        private int[] GetPositionOfPlayer()
-        {
-            for (int i = 0; i < GameMatrix.GetLength(0); i++)
-            {
-                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                switch (number)
                 {
-                    if (GameMatrix[i, j] == GameItem.player)
+                    case 1:
+                        GameMatrix[x - 1, y - 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 2:
+                        GameMatrix[x - 1, y] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 3:
+                        GameMatrix[x - 1, y + 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 4:
+                        GameMatrix[x, y + 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 5:
+                        GameMatrix[x + 1, y + 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 6:
+                        GameMatrix[x + 1, y] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 7:
+                        GameMatrix[x + 1, y - 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    case 8:
+                        GameMatrix[x, y - 1] = GameItem.space;
+                        BlockNumber++;
+                        BlocksMined++;
+                        CheckForGameEnd();
+                        break;
+                    default:
+                        break;
+                }
+            }
+            else if (isPlacing && BlockNumber > 0)
+            {
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                switch (number)
+                {
+                    case 1:
+                        GameMatrix[x - 1, y - 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 2:
+                        GameMatrix[x - 1, y] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 3:
+                        GameMatrix[x - 1, y + 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 4:
+                        GameMatrix[x, y + 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 5:
+                        GameMatrix[x + 1, y + 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 6:
+                        GameMatrix[x + 1, y] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 7:
+                        GameMatrix[x + 1, y - 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    case 8:
+                        GameMatrix[x, y - 1] = GameItem.placingBlock;
+                        BlockNumber--;
+                        BlocksPlaced++;
+                        CheckForGameEnd();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        public void ShowOptionsForMining()
+        {
+            if (!isPlacing)
+            {
+                isMining = true;
+
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                int k = 0;
+                int l = 0;
+
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    l = 0;
+                    for (int j = y - 1; j <= y + 1; j++)
                     {
-                        return new int[] { i, j };
+                        HelperMatrix[k, l] = GameMatrix[i, j];
+                        l++;
+                    }
+                    k++;
+                }
+
+                if (!CheckForLeftBorder(y))
+                {
+                    if (GameMatrix[x - 1, y - 1] != GameItem.space)
+                    {
+                        GameMatrix[x - 1, y - 1] = GameItem.n1;
+                    }
+                    if (GameMatrix[x, y - 1] != GameItem.space)
+                    {
+                        GameMatrix[x, y - 1] = GameItem.n8;
+                    }
+                    if (GameMatrix[x + 1, y - 1] != GameItem.space)
+                    {
+                        GameMatrix[x + 1, y - 1] = GameItem.n7;
+                    }
+                }
+                if (!CheckForRightBorder(y))
+                {
+                    if (GameMatrix[x - 1, y + 1] != GameItem.space)
+                    {
+                        GameMatrix[x - 1, y + 1] = GameItem.n3;
+                    }
+                    if (GameMatrix[x, y + 1] != GameItem.space)
+                    {
+                        GameMatrix[x, y + 1] = GameItem.n4;
+                    }
+                    if (GameMatrix[x + 1, y + 1] != GameItem.space)
+                    {
+                        GameMatrix[x + 1, y + 1] = GameItem.n5;
+                    }
+                }
+                if (!CheckForTopBorder(x))
+                {
+                    if (GameMatrix[x - 1, y - 1] != GameItem.space)
+                    {
+                        GameMatrix[x - 1, y - 1] = GameItem.n1;
+                    }
+                    if (GameMatrix[x - 1, y] != GameItem.space)
+                    {
+                        GameMatrix[x - 1, y] = GameItem.n2;
+                    }
+                    if (GameMatrix[x - 1, y + 1] != GameItem.space)
+                    {
+                        GameMatrix[x - 1, y + 1] = GameItem.n3;
+                    }
+                }
+                if (!CheckForBottomBorder(x))
+                {
+                    if (GameMatrix[x + 1, y - 1] != GameItem.space)
+                    {
+                        GameMatrix[x + 1, y - 1] = GameItem.n7;
+                    }
+                    if (GameMatrix[x + 1, y] != GameItem.space)
+                    {
+                        GameMatrix[x + 1, y] = GameItem.n6;
+                    }
+                    if (GameMatrix[x + 1, y + 1] != GameItem.space)
+                    {
+                        GameMatrix[x + 1, y + 1] = GameItem.n5;
                     }
                 }
             }
-            return new int[] { -1, -1 };
+
+        }
+        public async void RevertFromMining()
+        {
+            if (isMining)
+            {
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                int k = 0;
+                int l = 0;
+
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    l = 0;
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        if (GameMatrix[i, j] != GameItem.space && GameMatrix[i, j] != GameItem.player)
+                        {
+                            GameMatrix[i, j] = HelperMatrix[k, l];
+
+                        }
+
+                        l++;
+                    }
+                    k++;
+                }
+
+                isMining = false;
+
+                while (GameMatrix[x + 1, y] == GameItem.space)
+                {
+                    x++;
+                    GameMatrix[x, y] = GameItem.player;
+                    GameMatrix[x - 1, y] = GameItem.space;
+                    await Task.Delay(40);
+                }
+            }
+        }
+
+        public void ShowOptionsForPlacing()
+        {
+            if (!isMining)
+            {
+                isPlacing = true;
+
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                int k = 0;
+                int l = 0;
+
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    l = 0;
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        HelperMatrix[k, l] = GameMatrix[i, j];
+                        l++;
+                    }
+                    k++;
+                }
+
+                if (!CheckForLeftBorder(y))
+                {
+                    if (GameMatrix[x - 1, y - 1] == GameItem.space)
+                    {
+                        GameMatrix[x - 1, y - 1] = GameItem.n1;
+                    }
+                    if (GameMatrix[x, y - 1] == GameItem.space)
+                    {
+                        GameMatrix[x, y - 1] = GameItem.n8;
+                    }
+                    if (GameMatrix[x + 1, y - 1] == GameItem.space)
+                    {
+                        GameMatrix[x + 1, y - 1] = GameItem.n7;
+                    }
+                }
+                if (!CheckForRightBorder(y))
+                {
+                    if (GameMatrix[x - 1, y + 1] == GameItem.space)
+                    {
+                        GameMatrix[x - 1, y + 1] = GameItem.n3;
+                    }
+                    if (GameMatrix[x, y + 1] == GameItem.space)
+                    {
+                        GameMatrix[x, y + 1] = GameItem.n4;
+                    }
+                    if (GameMatrix[x + 1, y + 1] == GameItem.space)
+                    {
+                        GameMatrix[x + 1, y + 1] = GameItem.n5;
+                    }
+                }
+                if (!CheckForTopBorder(x))
+                {
+                    if (GameMatrix[x - 1, y - 1] == GameItem.space)
+                    {
+                        GameMatrix[x - 1, y - 1] = GameItem.n1;
+                    }
+                    if (GameMatrix[x - 1, y] == GameItem.space)
+                    {
+                        GameMatrix[x - 1, y] = GameItem.n2;
+                    }
+                    if (GameMatrix[x - 1, y + 1] == GameItem.space)
+                    {
+                        GameMatrix[x - 1, y + 1] = GameItem.n3;
+                    }
+                }
+                if (!CheckForBottomBorder(x))
+                {
+                    if (GameMatrix[x + 1, y - 1] == GameItem.space)
+                    {
+                        GameMatrix[x + 1, y - 1] = GameItem.n7;
+                    }
+                    if (GameMatrix[x + 1, y] == GameItem.space)
+                    {
+                        GameMatrix[x + 1, y] = GameItem.n6;
+                    }
+                    if (GameMatrix[x + 1, y + 1] == GameItem.space)
+                    {
+                        GameMatrix[x + 1, y + 1] = GameItem.n5;
+                    }
+                }
+            }
+        }
+        public async void RevertFromPlacing()
+        {
+            if (isPlacing)
+            {
+                var coordinates = GetPositionOfPlayer();
+                int x = coordinates[0];
+                int y = coordinates[1];
+
+                int k = 0;
+                int l = 0;
+
+                for (int i = x - 1; i <= x + 1; i++)
+                {
+                    l = 0;
+                    for (int j = y - 1; j <= y + 1; j++)
+                    {
+                        if (GameMatrix[i, j] != GameItem.placingBlock && GameMatrix[i, j] != GameItem.player)
+                        {
+                            GameMatrix[i, j] = HelperMatrix[k, l];
+
+                        }
+
+                        l++;
+                    }
+                    k++;
+                }
+
+                isPlacing = false;
+
+                while (GameMatrix[x + 1, y] == GameItem.space)
+                {
+                    x++;
+                    GameMatrix[x, y] = GameItem.player;
+                    GameMatrix[x - 1, y] = GameItem.space;
+                    await Task.Delay(40);
+                }
+            }
+        }
+
+        private bool CheckForLeftBorder(int j)
+        {
+            if (j == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool CheckForRightBorder(int j)
+        {
+            if (j == GameMatrix.GetLength(1))
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool CheckForTopBorder(int i)
+        {
+            if (i == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+        private bool CheckForBottomBorder(int i)
+        {
+            if (i == GameMatrix.GetLength(0))
+            {
+                return true;
+            }
+            return false;
         }
 
         private void ClearForLeft(int x, int y)
@@ -384,6 +752,58 @@ namespace NIKTOPIA.Logic
                 }
             }
         }
+
+        private int[] GetPositionOfPlayer()
+        {
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                {
+                    if (GameMatrix[i, j] == GameItem.player)
+                    {
+                        return new int[] { i, j };
+                    }
+                }
+            }
+            return new int[] { -1, -1 };
+        }
+
+        private void LoadNextLevel(string path)
+        {
+            string[] lines = File.ReadAllLines(path);
+            GameMatrix = new GameItem[int.Parse(lines[1]), int.Parse(lines[0])];
+            for (int i = 0; i < GameMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < GameMatrix.GetLength(1); j++)
+                {
+                    char character = lines[i + 2][j];
+                    GameMatrix[i, j] = ConvertToEnum(character);
+                }
+            }
+        }
+
+        private void CheckForGameEnd()
+        {
+            if (BlocksMined >= 10 && BlocksPlaced >= 10)
+            {
+                RevertFromMining();
+                RevertFromPlacing();
+
+                BlocksPlaced = 0;
+                BlocksMined = 0;
+
+                if (levelsQueue.Count == 0)
+                {
+                    Application.Current.Windows.OfType<Window>().SingleOrDefault(x => x.IsActive).DataContext = new MainWindowViewModel();
+                }
+                else
+                {
+                    LoadNextLevel(levelsQueue.Dequeue());
+
+                }
+            }
+        }
+
     }
 
 }

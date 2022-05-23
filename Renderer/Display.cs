@@ -112,6 +112,43 @@ namespace NIKTOPIA.Renderer
                                 brush = new ImageBrush
                                     (new BitmapImage(new Uri(Path.Combine("Resources", "bluepillar.png"), UriKind.RelativeOrAbsolute)));
                                 break;
+                            case GameLogic.GameItem.n1:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number1.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n2:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number2.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n3:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number3.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n4:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number4.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n5:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number5.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n6:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number6.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n7:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number7.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                            case GameLogic.GameItem.n8:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "number8.png"), UriKind.RelativeOrAbsolute)));
+                                break;
+                                break;
+                            case GameLogic.GameItem.placingBlock:
+                                brush = new ImageBrush
+                                    (new BitmapImage(new Uri(Path.Combine("Resources", "placingblock.jpg"), UriKind.RelativeOrAbsolute)));
+                                break;
                             default:
                                 break;
                         }
